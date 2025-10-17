@@ -1,0 +1,26 @@
+image: gitpod/workspace-full
+
+tasks:
+  - name: Setup Android SDK
+    init: |
+      echo "Setting up Android SDK..."
+      mkdir -p /home/gitpod/.android
+      echo "count=0" > /home/gitpod/.android/repositories.cfg
+      wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O cmdline-tools.zip
+      mkdir -p /home/gitpod/android/cmdline-tools
+      unzip cmdline-tools.zip -d /tmp
+      mv /tmp/cmdline-tools /home/gitpod/android/cmdline-tools/latest
+      export ANDROID_HOME=/home/gitpod/android
+      export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+      sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+      echo "Android SDK setup complete."
+    command: echo "Ready to code! Open in Android Studio (via browser)."
+
+vscode:
+  extensions:
+    - vscjava.vscode-java-pack
+    - 1995parham.android-dev-ext
+
+ports:
+  - port: 6080
+    onOpen: open-preview
